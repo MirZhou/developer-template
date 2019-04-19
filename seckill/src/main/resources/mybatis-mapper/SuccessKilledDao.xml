@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mir.seckill.dao.SuccessKilledDao">
+    <!-- 插入购买明细,可过滤重复 -->
+    <insert id="insertSuccessKilled" parameterType="SuccessKilled">
+        insert ignore into db_seckill.success_killed(seckill_id, user_phone, state, create_time)
+        values (#{seckillId}, #{userPhone}, #{state}, now())
+    </insert>
+
+    <!-- 根据ID查询实体，并查询其对应的Seckill对象 -->
+    <select id="getByIdWithSeckill" resultType="SuccessKilled">
+        select
+          sk.seckill_id, sk.user_phone, sk.state, sk.create_time,
+          sp.seckill_id "seckill.seckill_id",
+          sp.name "seckill.name",
+          sp.number "seckill.number",
+          sp.start_time "seckill.start_time",
+          sp.end_time "seckill.end_time",
+          sp.create_time "seckill.create_time"
+        from
+          db_seckill.success_killed sk
+          inner join db_seckill.seckill_product sp on sk.seckill_id = sp.seckill_id
+        where
+          sk.seckill_id = #{seckillId}
+          and sk.user_phone = #{userPhone}
+    </select>
+
+</mapper>

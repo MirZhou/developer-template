@@ -1,0 +1,39 @@
+body {
+    /* 背景图添加样式 */
+    background-size: cover;
+}
+
+.wrap > .text-center {
+    font-size: 2.4em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.main_content {
+    margin: 0 auto;
+    text-align: left;
+    float: none;
+    border-radius: 8px;
+    background-color: rgba(221, 221, 221, 0.1);
+}
+
+.main_content .font16 {
+    font-size: 1.2em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.login_input {
+    border: 1px solid #1e9fff;
+    border-radius: 8px;
+    outline: none;
+}
+
+.login_btn {
+    background-color: #1e9fff;
+    border-radius: 8px;
+}
