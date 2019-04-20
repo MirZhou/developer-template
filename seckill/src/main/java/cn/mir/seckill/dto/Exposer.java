@@ -3,6 +3,7 @@ package cn.mir.seckill.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * 暴露秒杀地址DTO
@@ -31,11 +32,11 @@ public class Exposer {
     /**
      * 秒杀开始时间
      */
-    private LocalDateTime start;
+    private LocalDateTime startTime;
     /**
      * 秒杀结束时间
      */
-    private LocalDateTime end;
+    private LocalDateTime endTime;
 
     public Exposer(boolean exposed, String md5, long seckillId) {
         this.exposed = exposed;
@@ -43,16 +44,40 @@ public class Exposer {
         this.seckillId = seckillId;
     }
 
-    public Exposer(boolean exposed, long seckillId, LocalDateTime now, LocalDateTime start, LocalDateTime end) {
+    public Exposer(boolean exposed, long seckillId, LocalDateTime now, LocalDateTime startTime, LocalDateTime endTime) {
         this.exposed = exposed;
         this.seckillId = seckillId;
         this.now = now;
-        this.start = start;
-        this.end = end;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Exposer(boolean exposed, long seckillId) {
         this.exposed = exposed;
         this.seckillId = seckillId;
+    }
+
+    public Long getNow() {
+        if (now == null) {
+            return null;
+        }
+
+        return now.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    }
+
+    public Long getStartTime() {
+        if (startTime == null) {
+            return null;
+        }
+
+        return startTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    }
+
+    public Long getEndTime() {
+        if (endTime == null) {
+            return null;
+        }
+
+        return endTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
     }
 }
