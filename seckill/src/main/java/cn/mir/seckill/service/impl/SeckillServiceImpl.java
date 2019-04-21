@@ -122,14 +122,6 @@ public class SeckillServiceImpl implements SeckillService {
         // 执行秒杀逻辑
         try {
 
-            // 减库存
-            int updateCount = this.seckillDao.reduceNumber(secKillId, LocalDateTime.now());
-
-            if (updateCount < 1) {
-                // 未成功更新库存
-                throw new SecKillClosedException("sec kill is closed.");
-            }
-
             // 记录购买行为
             SuccessKilled successKilled = new SuccessKilled();
             successKilled.setState(0);
@@ -141,18 +133,27 @@ public class SeckillServiceImpl implements SeckillService {
 
             if (insertCount < 1) {
                 throw new RepeatKillException("sec kill repeated");
+            } else {
+                // 减库存，热点商品竞争
+                int updateCount = this.seckillDao.reduceNumber(secKillId, LocalDateTime.now());
+
+                if (updateCount < 1) {
+                    // 未成功更新库存，秒杀结束
+                    throw new SecKillClosedException("sec kill is closed.");
+                } else {
+                    // 秒杀成功
+                    // 从数据库查询
+                    successKilled = this.successKilledDao.getByIdWithSeckill(secKillId, userPhone);
+                    return new SecKillExecution(secKillId, SecKillStateEnum.SUCCESS, successKilled);
+                }
+
+                // 返回对象
             }
 
-            // 从数据库查询
-            successKilled = this.successKilledDao.getByIdWithSeckill(secKillId, userPhone);
-
-            // 返回对象
-            return new SecKillExecution(secKillId, SecKillStateEnum.SUCCESS, successKilled);
-
-        } catch (SecKillClosedException ex1) {
-            throw ex1;
-        } catch (RepeatKillException ex2) {
-            throw ex2;
+        } catch (RepeatKillException ex) {
+            throw ex;
+        } catch (SecKillClosedException ex) {
+            throw ex;
         } catch (Exception ex3) {
             this.logger.error(ex3.getMessage(), ex3);
 
