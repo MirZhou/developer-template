@@ -2,6 +2,7 @@ package cn.mir.seckill.service.impl;
 
 import cn.mir.seckill.dao.SeckillDao;
 import cn.mir.seckill.dao.SuccessKilledDao;
+import cn.mir.seckill.dao.cache.RedisDao;
 import cn.mir.seckill.dto.Exposer;
 import cn.mir.seckill.dto.SecKillExecution;
 import cn.mir.seckill.entity.Seckill;
@@ -44,15 +45,22 @@ public class SeckillServiceImpl implements SeckillService {
     private final SuccessKilledDao successKilledDao;
 
     /**
+     * redis缓存
+     */
+    private final RedisDao redisDao;
+
+    /**
      * 构造方法注入对象
      *
      * @param seckillDao       秒杀商品Dao
      * @param successKilledDao 成功秒杀记录Dao
+     * @param redisDao         redis缓存
      */
     @Autowired
-    public SeckillServiceImpl(SeckillDao seckillDao, SuccessKilledDao successKilledDao) {
+    public SeckillServiceImpl(SeckillDao seckillDao, SuccessKilledDao successKilledDao, RedisDao redisDao) {
         this.seckillDao = seckillDao;
         this.successKilledDao = successKilledDao;
+        this.redisDao = redisDao;
     }
 
     @Override
@@ -67,10 +75,24 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Exposer exportSeckillUrl(long seckillId) {
-        Seckill seckill = this.seckillDao.getById(seckillId);
+        // 优化：将秒杀地址存储到Redis中
+
+        // 从缓存中读取数据
+        Seckill seckill = this.redisDao.getSeckill(seckillId);
 
         if (seckill == null) {
-            return new Exposer(false, seckillId);
+            // 缓存中未找到数据，从数据库中读取
+
+            // 访问数据库
+            seckill = this.seckillDao.getById(seckillId);
+
+            if (seckill == null) {
+                // 数据库中为找到记录
+                return new Exposer(false, seckillId);
+            }
+
+            // 将数据写入缓存中
+            this.redisDao.putSeckill(seckill);
         }
 
         LocalDateTime startTime = seckill.getStartTime();

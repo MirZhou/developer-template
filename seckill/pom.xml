@@ -78,6 +78,24 @@
       <version>2.0.1</version>
     </dependency>
 
+    <!-- 引入jedis使用redis缓存 -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <!-- protostuff序列化依赖 -->
+    <groupId>io.protostuff</groupId>
+    <artifactId>protostuff-core</artifactId>
+    <version>1.6.0</version>
+  </dependency>
+    <dependency>
+      <groupId>io.protostuff</groupId>
+      <artifactId>protostuff-runtime</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
     <!-- Servlet Web 相关依赖-->
     <dependency>
       <groupId>taglibs</groupId>

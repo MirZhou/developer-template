@@ -2,12 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 配置数据库 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <!-- 配置数据库连接池 -->
@@ -25,7 +21,7 @@
         <!-- 连接超时时间 -->
         <property name="checkoutTimeout" value="1000"/>
         <!-- 连接获取失败后重试的次数-->
-        <property name="acquireRetryAttempts" value="2" />
+        <property name="acquireRetryAttempts" value="2"/>
     </bean>
 
     <!-- 配置SqlSessionFactory对象 -->
@@ -46,5 +42,12 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <!-- 配置扫描Dao接口包 -->
         <property name="basePackage" value="cn.mir.seckill.dao"/>
+    </bean>
+
+    <!-- RedisDao注入 -->
+    <bean id="redisDao" class="cn.mir.seckill.dao.cache.RedisDao">
+        <constructor-arg name="ip" value="192.168.1.6"/>
+        <constructor-arg name="port" value="6379"/>
+        <constructor-arg name="password" value="123456"/>
     </bean>
 </beans>
