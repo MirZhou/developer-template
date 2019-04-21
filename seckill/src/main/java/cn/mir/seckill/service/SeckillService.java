@@ -49,4 +49,14 @@ public interface SeckillService {
      */
     SecKillExecution executeSecKill(long secKillId, String userPhone, String md5)
             throws SecKillException, RepeatKillException, SecKillClosedException;
+
+    /**
+     * 执行秒杀
+     *
+     * @param secKillId 秒杀商品ID
+     * @param userPhone 用户手机号
+     * @param md5       加密（用于验证）
+     * @return 秒杀执行结果
+     */
+    SecKillExecution executeSecKillProcedure(long secKillId, String userPhone, String md5);
 }

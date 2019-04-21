@@ -113,7 +113,7 @@ public class SecKillController {
 
         try {
 
-            SecKillExecution secKillExecution = this.seckillService.executeSecKill(seckillId, killPhone, md5);
+            SecKillExecution secKillExecution = this.seckillService.executeSecKillProcedure(seckillId, killPhone, md5);
             return new SeckillResult<>(true, secKillExecution);
 
         }  catch (RepeatKillException ex) {

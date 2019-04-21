@@ -12,6 +12,7 @@ import cn.mir.seckill.exception.RepeatKillException;
 import cn.mir.seckill.exception.SecKillClosedException;
 import cn.mir.seckill.exception.SecKillException;
 import cn.mir.seckill.service.SeckillService;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 业务接口实现：秒杀商品
@@ -159,6 +163,41 @@ public class SeckillServiceImpl implements SeckillService {
 
             // 所有编译期异常转换为运行期异常
             throw new SecKillException("sec kill inner error:" + ex3.getMessage());
+        }
+    }
+
+    @Override
+    public SecKillExecution executeSecKillProcedure(long secKillId, String userPhone, String md5) {
+        // 校验MD5值
+        if (md5 == null || !md5.equals(this.getMD5(secKillId))) {
+            return new SecKillExecution(secKillId, SecKillStateEnum.DATA_REWRITE);
+        }
+
+        LocalDateTime killTime = LocalDateTime.now();
+
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("seckillId", secKillId);
+        map.put("userPhone", userPhone);
+        map.put("killTime", killTime);
+        map.put("result", null);
+
+        try {
+            this.seckillDao.killByProcedure(map);
+
+            // 获取result
+            int result = MapUtils.getInteger(map, "result", -2);
+
+            if (result == 1) {
+                // 秒杀成功
+                // 从数据库查询
+                SuccessKilled successKilled = this.successKilledDao.getByIdWithSeckill(secKillId, userPhone);
+                return new SecKillExecution(secKillId, SecKillStateEnum.SUCCESS, successKilled);
+            } else {
+                return new SecKillExecution(secKillId, Objects.requireNonNull(SecKillStateEnum.stateOf(result)));
+            }
+        } catch (Exception e) {
+            this.logger.error(e.getMessage(), e);
+            return new SecKillExecution(secKillId, SecKillStateEnum.INNER_ERROR);
         }
     }
 

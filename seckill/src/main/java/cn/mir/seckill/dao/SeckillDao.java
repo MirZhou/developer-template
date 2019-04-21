@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 秒杀商品Dao
@@ -25,6 +26,12 @@ public interface SeckillDao {
      * @return 返回受影响的行数
      */
     int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") LocalDateTime killTime);
+
+    /**
+     * 调用存储过程执行秒杀
+     * @param params 参数
+     */
+    void killByProcedure(Map<String, Object> params);
 
     /**
      * 根据ID查询秒杀对象

@@ -71,4 +71,24 @@ public class SeckillServiceTest {
             this.logger.warn("exposer={}", exposer);
         }
     }
+
+    @Test
+    public void testExecuteSecKillProcedure() {
+        Long id = 1000L;
+        Exposer exposer = this.seckillService.exportSeckillUrl(id);
+
+        if (exposer.isExposed()) {
+            this.logger.info("exposer={}", exposer);
+
+            String phone = "18684107874";
+            String md5 = exposer.getMd5();
+
+            SecKillExecution secKillExecution = this.seckillService.executeSecKillProcedure(id, phone, md5);
+
+            this.logger.info("secKillExecution={}", secKillExecution);
+        } else {
+            // 秒杀未开启
+            this.logger.warn("exposer={}", exposer);
+        }
+    }
 }
