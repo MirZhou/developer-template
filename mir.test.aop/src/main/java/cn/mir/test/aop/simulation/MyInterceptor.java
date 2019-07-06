@@ -31,7 +31,7 @@ public class MyInterceptor implements Interceptor {
 
         this.logger.info("{}-------around after", this.getClass().getName());
 
-        return null;
+        return obj;
     }
 
     @Override
