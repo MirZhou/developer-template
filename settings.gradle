@@ -2,4 +2,5 @@ rootProject.name = 'developer-template'
 include 'mir.utilities'
 include 'mir.background.management'
 include 'mir.test.aop'
+include 'mir.test.security'
 
