@@ -2,7 +2,6 @@ package cn.mir.background.management.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 

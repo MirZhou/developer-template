@@ -16,7 +16,6 @@ import javax.persistence.Id;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuppressWarnings("unused")
 public class DataDictionaryOptionDetails extends BaseEntity {
     /**
      * 主键ID值

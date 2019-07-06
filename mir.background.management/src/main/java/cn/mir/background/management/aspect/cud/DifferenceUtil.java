@@ -21,12 +21,15 @@ import java.util.*;
 
 /**
  * 通用类：差异
- * <p>Create time: 2019/4/13 3:16 PM</p>
+ * <p>
+ * Create time: 2019/4/13 3:16 PM
+ * </p>
  *
  * @author 周光兵
  */
 public class DifferenceUtil {
-    public static List<ChangeItem> getInsertChangeItems(Object object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public static List<ChangeItem> getInsertChangeItems(Object object)
+            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         // 创建返回对象
         List<ChangeItem> changeItems = new ArrayList<>();
 
@@ -65,6 +68,7 @@ public class DifferenceUtil {
         return changeItem;
     }
 
+    @SuppressWarnings("rawtypes")
     public static List<ChangeItem> getChangeItems(Object oldObject, Object newObject) {
         Class cl = oldObject.getClass();
 
@@ -101,7 +105,6 @@ public class DifferenceUtil {
                     changeItems.add(changeItem);
                 }
             }
-
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -168,9 +171,10 @@ public class DifferenceUtil {
      * @throws InvocationTargetException 异常：调用目标方法异常
      * @throws IllegalAccessException    异常：非法访问
      */
-    public static Object getObjectById(Object target, Object id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NotFoundException {
+    public static Object getObjectById(Object target, Object id)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NotFoundException {
         Method findMethod = target.getClass().getDeclaredMethod("findById", Object.class);
-        Optional optional = (Optional) findMethod.invoke(target, id);
+        Optional<Object> optional = Optional.ofNullable(findMethod.invoke(target, id));
 
         if (!optional.isPresent()) {
             throw new NotFoundException("未找到指定记录");

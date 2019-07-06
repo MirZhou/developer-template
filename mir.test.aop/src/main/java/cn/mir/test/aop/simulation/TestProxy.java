@@ -1,8 +1,5 @@
 package cn.mir.test.aop.simulation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * <p>Create time: 2019/4/18 12:04 AM</p>
  *

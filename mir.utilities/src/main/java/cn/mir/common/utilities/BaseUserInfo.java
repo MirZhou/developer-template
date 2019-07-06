@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class BaseUserInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 操作员代码
      */
