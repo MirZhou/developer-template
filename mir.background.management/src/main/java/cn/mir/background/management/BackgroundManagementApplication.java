@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * 后台管理模块启动入口
- * <p>Create time: 2019/3/23 7:25 PM</p>
+ * <p>
+ * Create time: 2019/3/23 7:25 PM
+ * </p>
  *
  * @author 周光兵
  */
