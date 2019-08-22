@@ -67,6 +67,7 @@ project(":mir.background.management") {
         compile('org.springframework.boot:spring-boot-starter-data-mongodb')
         compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
         compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+        compile('org.springframework.boot:spring-boot-devtools')
         // Test
         testCompile('org.springframework.boot:spring-boot-starter-test')
     }
