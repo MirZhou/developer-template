@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="'请求异常 - '+#{web.title}">Web Title</title>
-</head>
-<body>
-<div>
-    <h1>Error handler</h1>
-    <!--/*@thymesVar id="errorCode" type="cn.fresh_supply.error.ExceptionMapper"*/-->
-    <div th:text="'Error code:' + ${errorCode}">异常代码</div>
-    <!--/*@thymesVar id="errorMessage" type="cn.fresh_supply.error.ExceptionMapper"*/-->
-    <div th:text="'Error message:' + ${errorMessage}">异常信息</div>
-    <!--/*@thymesVar id="url" type="cn.fresh_supply.error.ExceptionMapper"*/-->
-    <div th:text="'Reuqest url:' + ${url}">错误请求地址</div>
-</div>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="'请求异常 - '+#{web.title}">Web Title</title>
+
+        <style>
+            .btns {
+                margin-top: 1.25em;
+            }
+
+            .btns a+a {
+                margin-left: 0.75em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <h1>Error handler</h1>
+            <!--/*@thymesVar id="errorCode" type="cn.fresh_supply.error.ExceptionMapper"*/-->
+            <div th:text="'Error code: ' + ${errorCode}">异常代码</div>
+            <!--/*@thymesVar id="errorMessage" type="cn.fresh_supply.error.ExceptionMapper"*/-->
+            <div th:text="'Error message: ' + ${errorMessage}">异常信息</div>
+            <!--/*@thymesVar id="url" type="cn.fresh_supply.error.ExceptionMapper"*/-->
+            <div th:text="'Reuqest url: ' + ${url}">错误请求地址</div>
+
+            <div class="btns">
+                <a href="javascript:history.back(-1);">返回上一页</a>
+                <a th:href="@{/}">返回首页</a>
+            </div>
+        </div>
+    </body>
+
 </html>

@@ -2,11 +2,62 @@
 
     <head>
         <title>ErosZhou - 开发模版</title>
+
+        <style>
+            .container {
+                padding: 0.25em;
+            }
+
+            .container a {
+                display: inline-block;
+                padding: 0.75em 1.75em;
+                background: #1e9fff;
+                border-radius: .75em;
+                color: #fff;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            .container a:hover {
+                background: #0091ff;
+                font-weight: 700;
+            }
+
+            .container a+a {
+                margin-left: 1.5em;
+            }
+
+            #testResult {
+                display: block;
+                width: 70%;
+                min-height: 3em;
+                margin: 3em auto;
+                padding: .25em;
+                border: 1px solid #FF5722;
+            }
+        </style>
     </head>
 
     <body>
-        <a href="/service/stop">关闭</a>
-        <a href="/actuator">监控</a>
+        <div class="container">
+            <a href="/service/stop">关闭</a>
+            <a href="/actuator">监控</a>
+            <a href="/test/0">web测试</a>
+            <a href="javascript:void(0);" onclick="ajaxTest();">ajax测试</a>
+
+            <code id="testResult">
+
+            </code>
+        </div>
+
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            function ajaxTest() {
+                $.getJSON("/ajaxTest/0", function (result) {
+                    $("#testResult").html(JSON.stringify(result));
+                });
+            }
+        </script>
     </body>
 
 </html>

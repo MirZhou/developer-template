@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +59,7 @@ public class ErrorHandlerController extends AbstractErrorController {
     public ResponseEntity<ResponseResult<Void>> error(HttpServletRequest request) {
         ResponseResult<Void> result = this.getResponseResult(request);
 
-        return ResponseEntity.status(result.getCode()).body(result);
+        return ResponseEntity.status(HttpStatus.OK.value()).body(result);
     }
 
     @Override
