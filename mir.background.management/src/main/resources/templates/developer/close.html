@@ -1,0 +1,29 @@
+<html>
+
+    <head>
+        <title>ErosZhou - 开发模版</title>
+    </head>
+
+    <body>
+        <button id="shutdown" type="submit">关闭服务</button>
+
+        <ul id="errors"></ul>
+
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $("#shutdown").click(function () {
+                $.post({
+                    url: "/developer/shutdown",
+                    complete: function (result) {
+                        let ele = document.createElement("li");
+                        ele.innerText = result.responseText;
+
+                        $("#errors").append(ele);
+                    },
+                    dataType: "json"
+                });
+            });
+        </script>
+    </body>
+
+</html>
