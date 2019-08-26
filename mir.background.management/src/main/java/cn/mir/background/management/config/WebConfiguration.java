@@ -40,15 +40,7 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 // 密码为abc
                 .password(passwordEncoder.encode("abc"))
                 // 赋予USER和ADMIN的角色权限
-                .roles("ADMIN", "USER")
-                // 连接方法and
-                .and()
-                // 注册用户myuser
-                .withUser("myuser")
-                // 密码123456
-                .password(passwordEncoder.encode("123456"))
-                // 赋予USER的角色权限
-                .roles("USER");
+                .roles("ADMIN", "USER");
     }
 
     @Override
@@ -60,13 +52,11 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 // 签名登录后
                 .authorizeRequests()
                 // 要求登录用户拥有ADMIN角色
-                .antMatchers("/service/stop").hasRole("ADMIN")
-                // 要求登录用户拥有USER角色
-                .antMatchers("/actuator/**").hasRole("ADMIN")
+                .antMatchers("/developer/**").hasRole("ADMIN")
                 // 没有配置权限的其它请求允许匿名访问
                 .and().anonymous()
                 // 使用默认登录页面
-                .and().formLogin()
+                .and().formLogin().loginPage("/developer/login").permitAll()
                 // 启动HTTP基础验证
                 .and().httpBasic();
     }
