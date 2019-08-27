@@ -72,6 +72,10 @@ project(":mir.background.management") {
         compile('org.springframework.boot:spring-boot-devtools')
         // Test
         testCompile('org.springframework.boot:spring-boot-starter-test')
+        // Web Jars
+        compile 'org.webjars:jquery:3.4.1'
+        compile 'org.webjars.bower:font-awesome:4.7.0'
+        compile 'org.webjars:bootstrap:3.4.0'
     }
 }
 
