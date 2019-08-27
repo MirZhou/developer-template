@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Eros
  */
 @Configuration
-public class WebConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * 日志
      */
