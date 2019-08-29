@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
         <title th:text="'用户登录 - '+#{web.title}">Web Title</title>
@@ -34,6 +34,7 @@
 
         <div class="container">
             <div class="starter-template">
+                <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
                 <p th:if="${param.error}" class="bg-danger" th:text="${errorMessage}">有错误，请重试</p>
                 <!-- 2 -->
 
@@ -53,13 +54,71 @@
                         </div>
                     </div>
 
-                    <input id="login" type="submit" value="登录" class="btn btn-primary" />
+                    <input id="login" type="button" value="登录" class="btn btn-primary" />
                 </form>
                 <!-- /form[name="form"] -->
             </div>
         </div>
         <!-- /.container -->
 
-        <link rel="stylesheet" href="/webjars/bootstrap/3.4.0/js/bootstrap.min.js" />
+        <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+        <script src="/webjars/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script th:inline="javascript">
+            /*<![CDATE[*/
+            // 登录请求提交地址
+            let submitUrl = /*[[@{/login}]]*/ undefined;
+            /*]]>*/
+        </script>
+        <script>
+            let $iptUsername = $("#username");
+            let $iptPassword = $("#password");
+
+            $(function() {
+                // 设置文本框焦点
+                $iptUsername.focus();
+            });
+
+            $("#login").click(function(){
+                submitLogin();
+            });
+
+            /**
+             * Ajax提交登录
+             */
+            function submitLogin() {
+                debugger;
+                let username = $iptUsername.val();
+                let password = $iptPassword.val();
+
+                if (!username) {
+                    alert("请输入用户名");
+                    $iptUsername.focus();
+                    return false;
+                }
+
+                if (!password) {
+                    alert("请输入密码");
+                    $iptPassword.focus();
+                    return false;
+                }
+
+                // 发起登录请求
+                $.post(
+                    submitUrl,
+                    { username: username, password: password },
+                    function(result) {
+                        debugger;
+                        alert(result.message);
+
+                        if (result.success) {
+                            location.href = "/";
+                        }
+                    },
+                    "JSON"
+                );
+
+                return false;
+            }
+        </script>
     </body>
 </html>
