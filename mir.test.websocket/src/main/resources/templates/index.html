@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        button {
+            padding: 0.5em 2em;
+        }
+
+        section + section {
+            margin-top: 0.25em;
+        }
+    </style>
+</head>
+<body>
+<h1>页面测试</h1>
+
+<section>
+    <input id="typeOne" type="radio" name="type" value="one" checked="checked"><label for="typeOne">私聊</label>
+    <input id="typeTwo" type="radio" name="type" value="group"><label for="typeTwo">群聊</label>
+</section>
+
+<section>
+    <input id="subscribeUser" type="text" placeholder="订阅用户名称"/>
+    <button id="btnSubscribeUser" disabled> 订阅</button>
+</section>
+
+<section>
+    <input id="sendMessage" type="text"/>
+</section>
+
+<section>
+    <button id="btnConnect">连接</button>
+    <button id="btnSend" disabled="disabled">发送</button>
+    <button id="btnDisconnect" disabled="disabled">断开连接</button>
+</section>
+
+<section>
+    <textarea id="iptReceiveMessage" rows="20" cols="75"></textarea>
+</section>
+
+<script src="/webjars/jquery/3.4.1/jquery.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3-1/stomp.js"></script>
+<script>
+    let currentLocation = window.location.href;
+    let search = currentLocation.substr(currentLocation.lastIndexOf("=") + 1);
+    let stompClient;
+    let webSocket;
+
+    let $iptSendMessage = $("#sendMessage"),
+        $iptReceiveMessage = $("#iptReceiveMessage");
+
+    let $btnSubscribeUser = $("#btnSubscribeUser");
+
+    let $btnConnect = $("#btnConnect"),
+        $btnSend = $("#btnSend"),
+        $btnDisconnect = $("#btnDisconnect");
+
+    let header = {
+        loginToken: "this-is-login-token",
+        username: 'admin',
+        password: 'password'
+    };
+
+    function setConnected(connected) {
+        $btnSubscribeUser.prop("disabled", !connected);
+
+        $btnConnect.prop("disabled", connected);
+        $btnSend.prop("disabled", !connected);
+        $btnDisconnect.prop("disabled", !connected);
+    }
+
+    function connect() {
+        console.log("连接websocket服务");
+
+        let socket = new SockJS("/chat");
+        stompClient = Stomp.over(socket); // Stomp.client("ws://" + window.location.host + "/chat/websocket");
+        stompClient.connect(header, function connectCallback(frame) {
+            console.log("webSocket connection is connected:" + stompClient.connected);
+
+            setConnected(true);
+
+            stompClient.subscribe("/topic/chat", function (message) {
+                console.log("chat \t message:" + message);
+                $iptReceiveMessage.val(message);
+            });
+
+            stompClient.subscribe("/topic/notice", function (message) {
+                console.log("group chat \t message:" + message);
+                debugger;
+                $iptReceiveMessage.val(message);
+            });
+
+            stompClient.subscribe("/topic/test", function (message) {
+                console.log("topic test chat1 \t message:" + message);
+                $iptReceiveMessage.val(message);
+
+            });
+            stompClient.subscribe("/topic/greetings", function (message) {
+                console.log("topic test chat2 \t message:" + message);
+                $iptReceiveMessage.val(message);
+
+            });
+
+        }, function errorCallback(error) {
+            setConnected(false);
+            console.log(error);
+        });
+
+        console.log(stompClient.connected);
+
+    }
+
+    $btnSend.click(function () {
+        let chatType = $("input[type=radio][name=type]:checked").val();
+        let message = ($iptSendMessage.val() || '').trim();
+
+        if (chatType === "one") {
+            // 私聊
+            let content = "{'content':'" + message + "','receiver':'anoy'}";
+            stompClient.send("/app/chat", {}, content);
+        } else {
+            // 群聊
+
+            stompClient.send("/app/notice", {}, message);
+        }
+    });
+
+    $btnConnect.click(function () {
+        connect();
+    });
+
+    $btnDisconnect.click(function () {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+
+        setConnected(false);
+        console.log("Disconnected");
+    });
+
+    $(function () {
+        connect();
+    });
+</script>
+</body>
+</html>

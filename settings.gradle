@@ -3,4 +3,5 @@ include 'mir.utilities'
 include 'mir.background.management'
 include 'mir.test.aop'
 include 'mir.test.security'
+include 'mir.test.websocket'
 

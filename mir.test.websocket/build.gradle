@@ -1,0 +1,32 @@
+group = 'cn.mir.test.websocket'
+version = '1.0.0'
+
+apply plugin: 'org.springframework.boot'
+// 由Spring统一管理依赖
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = 'mir.test.websocket'
+
+bootJar {
+    enabled = true
+}
+
+dependencies {
+    //
+    compile project(":mir.utilities")
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-websocket'
+    compile 'org.springframework:spring-messaging'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // webjar
+    compile 'org.webjars:jquery:3.4.1'
+    compile 'org.webjars:sockjs-client:1.1.2'
+    compile 'org.webjars:stomp-websocket:2.3.3-1'
+
+    // test
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
