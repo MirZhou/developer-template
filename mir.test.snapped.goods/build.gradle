@@ -1,0 +1,37 @@
+group = 'mir.test.snapped.goods'
+version = '1.0.0'
+
+apply plugin: 'org.springframework.boot'
+// 由Spring统一管理依赖
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = 'mir.test.snapped.goods'
+
+bootJar {
+    enabled = true
+}
+
+dependencies {
+    //
+    compile project(":mir.utilities")
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-devtools'
+    compile 'org.springframework.boot:spring-boot-configuration-processor'
+    compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
+    compile group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+    compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+
+    //
+    compile 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
+    compile group: 'org.mybatis.generator', name: 'mybatis-generator-core', version: mybatisGeneratorCoreVersion
+
+    // webjar
+    compile 'org.webjars:jquery:3.4.1'
+
+    // test
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购买产品测试</title>
+</head>
+<body>
+<button onclick="executionPurchase();">立即抢购</button>
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    /**
+     * 执行抢购
+     */
+    function executionPurchase() {
+        for (let i = 0; i < 5000; i++) {
+            let param = {
+                userId: 1,
+                productId: 1,
+                quantity: 1
+            };
+
+            $.post("/purchase", param, function (result) {
+                console.log(result);
+            });
+        }
+    }
+</script>
+</body>
+</html>
