@@ -74,12 +74,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         BigDecimal sum = product.getPrice().multiply(new BigDecimal(quantity));
 
         return new PurchaseRecord()
-                .withNote("购买日志，时间" + System.currentTimeMillis())
-                .withPrice(product.getPrice())
-                .withProductId(product.getId())
-                .withQuantity(quantity)
-                .withSum(sum)
-                .withUserId(userId);
+                .setNote("购买日志，时间" + System.currentTimeMillis())
+                .setPrice(product.getPrice())
+                .setProductId(product.getId())
+                .setQuantity(quantity)
+                .setSum(sum)
+                .setUserId(userId);
     }
 
 }

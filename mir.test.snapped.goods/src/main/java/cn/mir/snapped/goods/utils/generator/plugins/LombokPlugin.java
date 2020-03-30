@@ -26,9 +26,11 @@ public class LombokPlugin extends PluginAdapter {
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         // 导入Lombok包
         topLevelClass.addImportedType("lombok.Data");
+        topLevelClass.addImportedType("lombok.experimental.Accessors");
 
         // 添加lombok注解
         topLevelClass.addAnnotation("@Data");
+        topLevelClass.addAnnotation("@Accessors(chain = true)");
 
         return true;
     }

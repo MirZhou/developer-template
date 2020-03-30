@@ -4,15 +4,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 购买记录表
  * <p>Table name:t_purchase_record</p>
- * <p>Create time:2020-03-27 01:14:06</p>
+ * <p>Create time:2020-03-30 23:32:18</p>
  *
  * @author ErosZhou
  */
 @Data
+@Accessors(chain = true)
 public class PurchaseRecord implements Serializable {
     /**
      * 编号
@@ -55,46 +57,6 @@ public class PurchaseRecord implements Serializable {
     private String note;
 
     private static final long serialVersionUID = 1L;
-
-    public PurchaseRecord withId(Integer id) {
-        this.setId(id);
-        return this;
-    }
-
-    public PurchaseRecord withUserId(Integer userId) {
-        this.setUserId(userId);
-        return this;
-    }
-
-    public PurchaseRecord withProductId(Integer productId) {
-        this.setProductId(productId);
-        return this;
-    }
-
-    public PurchaseRecord withPrice(BigDecimal price) {
-        this.setPrice(price);
-        return this;
-    }
-
-    public PurchaseRecord withQuantity(Integer quantity) {
-        this.setQuantity(quantity);
-        return this;
-    }
-
-    public PurchaseRecord withSum(BigDecimal sum) {
-        this.setSum(sum);
-        return this;
-    }
-
-    public PurchaseRecord withPurchaseDate(LocalDateTime purchaseDate) {
-        this.setPurchaseDate(purchaseDate);
-        return this;
-    }
-
-    public PurchaseRecord withNote(String note) {
-        this.setNote(note);
-        return this;
-    }
 
     @Override
     public String toString() {

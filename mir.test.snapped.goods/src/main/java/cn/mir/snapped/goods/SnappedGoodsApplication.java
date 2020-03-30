@@ -39,7 +39,7 @@ public class SnappedGoodsApplication implements ApplicationRunner {
     /**
      * 通过mybatisGenerator生成代码
      * 
-     * @throws XMLParserException
+     * @throws XMLParserException xml文件读取异常
      */
     @SuppressWarnings("unused")
     private void generateArtifacts()

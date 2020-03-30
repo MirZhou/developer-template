@@ -3,15 +3,17 @@ package cn.mir.snapped.goods.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 产品信息表
  * <p>Table name:t_product</p>
- * <p>Create time:2020-03-27 01:14:06</p>
+ * <p>Create time:2020-03-30 23:32:18</p>
  *
  * @author ErosZhou
  */
 @Data
+@Accessors(chain = true)
 public class Product implements Serializable {
     /**
      * 编号
@@ -44,36 +46,6 @@ public class Product implements Serializable {
     private String note;
 
     private static final long serialVersionUID = 1L;
-
-    public Product withId(Integer id) {
-        this.setId(id);
-        return this;
-    }
-
-    public Product withProductName(String productName) {
-        this.setProductName(productName);
-        return this;
-    }
-
-    public Product withStock(Integer stock) {
-        this.setStock(stock);
-        return this;
-    }
-
-    public Product withPrice(BigDecimal price) {
-        this.setPrice(price);
-        return this;
-    }
-
-    public Product withVersion(Integer version) {
-        this.setVersion(version);
-        return this;
-    }
-
-    public Product withNote(String note) {
-        this.setNote(note);
-        return this;
-    }
 
     @Override
     public String toString() {
