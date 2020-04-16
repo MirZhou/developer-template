@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #root {
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        article {
+            display: inline-flex;
+            min-height: 20vh;
+        }
+
+        article:not(.buttons) {
+            width: 20vw;
+            border: 1px solid red;
+        }
+
+        article:not(.buttons) label {
+            word-break: break-all;
+        }
+
+        article.buttons {
+            width: 5vw;
+        }
+
+        article.buttons div {
+            width: 100%;
+        }
+
+        article.buttons button {
+            display: block;
+            width: 90%;
+            height: 30px;
+            margin: 2em auto;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <article>
+        <label>Token:{{ token }}</label>
+        <br>
+        <label>Sign:{{ signValue }}</label>
+    </article>
+    <article class="buttons">
+        <div>
+            <button @click="generate">生成Token</button>
+            <button @click="validation">校验Token</button>
+        </div>
+    </article>
+    <article>
+        <label>校验结果：{{ result }}</label>
+    </article>
+</div>
+
+<script src="webjars/vue/2.6.11/vue.js"></script>
+<script src="webjars/axios/0.19.2/dist/axios.js"></script>
+<script src="webjars/crypto-js/3.1.9-1/crypto-js.js"></script>
+<script>
+    axios.defaults.baseURL = "/";
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+    // 模拟设备信息
+    let device = {
+        // id
+        id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+        // 名称
+        name: 'eros-zhou',
+        // 类型
+        type: 1
+    };
+
+    let encrypt = (code, key) => {
+        let keyHex = CryptoJS.enc.Utf8.parse(key);
+        let encrypted = CryptoJS.DES.encrypt(code, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+
+        return encrypted.toString();
+    };
+
+    let decrypt = (encrypt, key) => {
+        let keyHex = CryptoJS.enc.Utf8.parse(key);
+        let decrypted = CryptoJS.DES.decrypt(encrypt, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+
+        return decrypted.toString(CryptoJS.enc.Utf8);
+    };
+
+    let vue = new Vue({
+        el: "#root",
+        data: {
+            token: null,
+            signValue: null,
+            result: null
+        },
+        methods: {
+            generate: () => {
+                axios.post('/gen/token/administrator', {
+                    "deviceId": device.id,
+                    "deviceName": device.name,
+                    "deviceType": device.type,
+                    "username": "administrator"
+                }).then(res => {
+                    vue.token = res.data;
+                    vue.result = null;
+                }).catch(res => {
+                    vue.result = JSON.stringify(res.response.data);
+                })
+            },
+            sign: () => {
+                let token = vue.token;
+
+                if (!token) {
+                    vue.result = "token is null";
+                    return false;
+                }
+
+                // 取token的8到24位字符串（共24位）作为加密密钥
+                let key = token.substring(8, 16);
+
+                console.log(`encrypt key:${key}`);
+
+                // 构造加密对象
+                let encryptObj = {
+                    // 校验项
+                    "deviceId": device.id,
+                    "deviceName": device.name,
+                    "deviceType": device.type,
+                    "timestamp": Date.now(),
+                    // 干扰因子，不作为校验项
+                    "salt": token
+                };
+
+                // 返回加密后的字符串
+                let encryptedValue = encrypt(JSON.stringify(encryptObj), key);
+
+                vue.signValue = encryptedValue;
+
+                console.log(`encrypted value:${encryptedValue} \t len:${encryptedValue.length}`);
+
+                let decryptedValue = decrypt(encryptedValue, key);
+
+                console.log(`decrypted value:${decryptedValue} \t len:${decryptedValue.length}`);
+
+                return encryptedValue;
+            },
+            validation: () => {
+                // 获取签名
+                let sign = vue.sign();
+
+                axios.get(`/validation/token`, {
+                    headers: {
+                        token: vue.token,
+                        sign: sign
+                    }
+                }).then(res => {
+                    vue.result = res.data;
+                }).catch(res => {
+                    vue.result = JSON.stringify(res.response.data);
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

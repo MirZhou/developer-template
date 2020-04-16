@@ -1,0 +1,9 @@
+apply plugin: 'org.springframework.boot'
+// 由Spring统一管理依赖
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = 'mir.test.token.security'
+
+bootJar {
+    enabled = true
+}

@@ -48,13 +48,15 @@ allprojects {
 }
 
 // 通用类库
-project(":mir.utilities"){
-    dependencies{
-        compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+project(":mir.utilities") {
+    dependencies {
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
         compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
         compile group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
+        compile group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+        compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+        compile group: 'org.python', name: 'jython', version: '2.7.2'
     }
 }
 
@@ -71,7 +73,7 @@ project(":mir.background.management") {
         compile('org.springframework.boot:spring-boot-starter-data-jpa')
         compile('org.springframework.boot:spring-boot-starter-data-mongodb')
         compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.1'
-        compile group:"com.alibaba",name:"druid-spring-boot-starter",version:"1.1.18"
+        compile group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
         compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
         compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
         compile('org.springframework.boot:spring-boot-devtools')
@@ -94,6 +96,57 @@ project(":mir.test.aop") {
         compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.3'
         // Test
         testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
+}
+
+project(":mir.test.snapped.goods") {
+    group = 'cn.mir.test.snapped.goods'
+    version = '1.0.0'
+
+    dependencies {
+        //
+        compile project(":mir.utilities")
+
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        compile 'org.springframework.boot:spring-boot-devtools'
+        compile 'org.springframework.boot:spring-boot-configuration-processor'
+        compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
+        compile group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+        compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+
+        //
+        compile 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
+        compile group: 'org.mybatis.generator', name: 'mybatis-generator-core', version: mybatisGeneratorCoreVersion
+
+        // webjar
+        compile 'org.webjars:jquery:3.4.1'
+
+        // test
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+}
+
+project(":mir.test.token.security") {
+    group 'cn.mir.test.token.security'
+    version '1.0.0'
+
+    dependencies {
+        //
+        compile project(":mir.utilities")
+
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        compile 'org.springframework.boot:spring-boot-starter-data-redis'
+
+        compile 'org.springframework.boot:spring-boot-devtools'
+
+        // webjars
+        compile 'org.webjars:vue:2.6.11'
+        compile 'org.webjars.npm:axios:0.19.2'
+        compile 'org.webjars.bower:crypto-js:3.1.9-1'
     }
 }
 
