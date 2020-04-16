@@ -75,7 +75,7 @@ public class RedisCacheEntity implements Serializable {
             return false;
         }
 
-        // 请求时间差在5分钟之内有效
+        // 请求时间差的绝对值在5分钟之内有效
         return true;
     }
 }
