@@ -6,4 +6,4 @@ include 'mir.test.security'
 include 'mir.test.websocket'
 include 'mir.test.snapped.goods'
 include 'mir.test.token.security'
-
+include 'mir.spring.generator'
