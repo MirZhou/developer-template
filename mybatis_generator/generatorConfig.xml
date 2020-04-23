@@ -22,6 +22,8 @@
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <!-- 覆盖生成的*Mapper.xml文件 -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/road_freezing_monitoring?serverTimezone=Asia/Shanghai&amp;useSSL=false"
