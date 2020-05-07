@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 控制器-购买相关
- * <p>Create time: 2020/3/27 01:16</p>
+ * <p>
+ * Create time: 2020/3/27 01:16
+ * </p>
  *
  * @author 周光兵
  */
@@ -31,6 +33,8 @@ public class PurchaseController {
 
     @PostMapping(value = "/purchase")
     public ResponseResult<Void> purchase(Integer userId, Integer productId, Integer quantity) {
+        log.info("执行采购");
+
         boolean flag = this.purchaseService.purchase(userId, productId, quantity);
         String message = flag ? "抢购成功" : "抢购失败";
 
