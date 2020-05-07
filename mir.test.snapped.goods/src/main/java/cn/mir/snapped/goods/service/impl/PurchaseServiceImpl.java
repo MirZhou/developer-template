@@ -45,6 +45,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean purchase(Integer userId, Integer productId, int quantity) {
+        log.info("保存采购记录");
+
         // 获取产品
         Product product = this.productMapper.selectByPrimaryKey(productId);
 
@@ -73,13 +75,8 @@ public class PurchaseServiceImpl implements PurchaseService {
         // 计算总价
         BigDecimal sum = product.getPrice().multiply(new BigDecimal(quantity));
 
-        return new PurchaseRecord()
-                .setNote("购买日志，时间" + System.currentTimeMillis())
-                .setPrice(product.getPrice())
-                .setProductId(product.getId())
-                .setQuantity(quantity)
-                .setSum(sum)
-                .setUserId(userId);
+        return new PurchaseRecord().setNote("购买日志，时间" + System.currentTimeMillis()).setPrice(product.getPrice())
+                .setProductId(product.getId()).setQuantity(quantity).setSum(sum).setUserId(userId);
     }
 
 }
