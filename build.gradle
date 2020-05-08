@@ -164,6 +164,8 @@ project(":mir.spring.generator") {
         compile 'org.springframework.boot:spring-boot-starter-data-redis'
 
         compile 'org.springframework.boot:spring-boot-devtools'
+        
+        compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
 
         // webjars
         compile 'org.webjars:vue:2.6.11'
