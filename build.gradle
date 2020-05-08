@@ -159,13 +159,21 @@ project(":mir.spring.generator") {
         //
         compile project(":mir.utilities")
 
-        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile ('org.springframework.boot:spring-boot-starter-web') {
+		    exclude group: 'org.springframework.boot', module:'spring-boot-starter-tomcat'
+	    }
+	    compile ('org.springframework.boot:spring-boot-starter-jetty')
         compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
         compile 'org.springframework.boot:spring-boot-starter-data-redis'
 
         compile 'org.springframework.boot:spring-boot-devtools'
         
         compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
+        compile group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+        compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+        
+        // Test
+        testCompile('org.springframework.boot:spring-boot-starter-test')
 
         // webjars
         compile 'org.webjars:vue:2.6.11'

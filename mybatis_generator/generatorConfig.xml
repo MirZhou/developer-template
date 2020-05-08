@@ -1,66 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <classPathEntry location="./libs/mysql-connector-java-8.0.13.jar"/>
+    <classPathEntry location="./libs/mysql-connector-java-8.0.13.jar" />
 
     <context id="mysql" targetRuntime="MyBatis3">
         <!-- 抑制警告 -->
-        <property name="suppressTypeWarnings" value="true"/>
+        <property name="suppressTypeWarnings" value="true" />
 
         <!-- 生成的Java文件的编码 -->
-        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFileEncoding" value="UTF-8" />
         <!-- 格式化java代码 -->
-        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
         <!-- 格式化XML代码 -->
-        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
 
         <!-- 配置插件 -->
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
         <!-- 覆盖生成的*Mapper.xml文件 -->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
 
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/road_freezing_monitoring?serverTimezone=Asia/Shanghai&amp;useSSL=false"
-                        userId="root"
-                        password="123456">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://172.46.3.54:3306/db_test?serverTimezone=Asia/Shanghai&amp;useSSL=false" userId="root" password="123456">
             <!-- 设置 useInformationSchema 属性为 true -->
-            <property name="useInformationSchema" value="true"/>
+            <property name="useInformationSchema" value="true" />
         </jdbcConnection>
 
         <!-- entity -->
-        <javaModelGenerator targetPackage="cn.mir.spring.generator.entity"
-                            targetProject="C:\projects\developer-template\mir.spring.generator\src\main\java">
-            <property name="enableSubPackages" value="true"/>
-            <property name="trimStrings" value="true"/>
+        <javaModelGenerator targetPackage="cn.mir.spring.generator.entity" targetProject="D:\projects\developer-template\mir.spring.generator\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
         <!-- *Mapper.xml -->
-        <sqlMapGenerator targetPackage="generator"
-                         targetProject="C:\projects\developer-template\mir.spring.generator\src\main\resources\mybatis-mapper">
-            <property name="enableSubPackages" value="true"/>
+        <sqlMapGenerator targetPackage="generator" targetProject="D:\projects\developer-template\mir.spring.generator\src\main\resources\mybatis-mapper">
+            <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
         <!-- mapper -->
-        <javaClientGenerator type="MIXEDMAPPER"
-                             targetPackage="cn.mir.spring.generator.mapper.generator"
-                             targetProject="C:\projects\developer-template\mir.spring.generator\src\main\java">
-            <property name="enableSubPackages" value="false"/>
+        <javaClientGenerator type="MIXEDMAPPER" targetPackage="cn.mir.spring.generator.mapper.generator" targetProject="D:\projects\developer-template\mir.spring.generator\src\main\java">
+            <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
         <!-- 用户信息表 -->
-        <table tableName="tb_user" domainObjectName="User">
-            <generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+        <table tableName="t_exam_paper" domainObjectName="ExamPaper">
+            <generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()" identity="true" />
 
-            <columnOverride column="mark_status" javaType="java.lang.Boolean" jdbcType="BIT"/>
-            <columnOverride column="mark_super_user" javaType="java.lang.Boolean" jdbcType="BIT"/>
-            <columnOverride column="mark_delete" javaType="java.lang.Boolean" jdbcType="BIT"/>
-            <columnOverride column="message_push" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <columnOverride column="category" javaType="cn.mir.spring.generator.enums.ExamPaperCategoryEnum" jdbcType="TINYINT" />
         </table>
 
     </context>
