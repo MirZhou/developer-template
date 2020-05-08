@@ -12,6 +12,14 @@ import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
+/**
+ * 主类
+ * <p>
+ * Create time:2020-05-08 11:42:05
+ * </p>
+ * 
+ * @author Eros Zhou
+ */
 public class Main {
     public static void main(String[] args) {
         try {
