@@ -4,7 +4,7 @@
 <generatorConfiguration>
     <classPathEntry location="./libs/mysql-connector-java-8.0.13.jar" />
 
-    <context id="mysql" targetRuntime="MyBatis3">
+    <context id="mysql" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 抑制警告 -->
         <property name="suppressTypeWarnings" value="true" />
 
