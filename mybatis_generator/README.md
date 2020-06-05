@@ -20,6 +20,11 @@
      > 包名：`javaClientGenerator.targetPackage`  
      > 文件绝对路径（不包含包名）：`javaClientGenerator.targetProject`
 
+   * 要生成的数据库表配置
+     > `table.tableName`  
+     > `table.domainObjectName`  
+     > `其它配置`
+
 ![](./resources/images/021.png)
 ![](./resources/images/022.png)
 
