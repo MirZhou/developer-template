@@ -41,3 +41,4 @@ target/
 
 ### project ###
 /data/
+mybatis_generator/generator/
