@@ -17,7 +17,7 @@ import javax.validation.Valid;
  */
 @Slf4j
 @RestController
-public class UserController extends BaseController {
+public class UserController {
     @PostMapping(value = "/user")
     public ResponseResult<Void> save(@Valid @RequestBody UserSubmit submitData,
                                      BindingResult bindingResult) {
