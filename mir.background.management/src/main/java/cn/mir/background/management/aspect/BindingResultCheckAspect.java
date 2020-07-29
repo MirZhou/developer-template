@@ -1,5 +1,7 @@
 package cn.mir.background.management.aspect;
 
+import cn.mir.background.management.utils.validation.AbstractParamValid;
+import cn.mir.background.management.utils.validation.FieldErrorMessage;
 import cn.mir.common.utilities.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,10 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import javax.validation.Valid;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,56 +49,32 @@ public class BindingResultCheckAspect {
     public void putMappingPointcut() {
     }
 
-    @Around(value = "deleteMappingPointcut() || postMappingPointcut() || putMappingPointcut()")
-    public Object bindingResultCheck(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around(value = "execution(* cn.mir.background.management.controller..*.*(..)) && args(.., bindingResult)")
+    public Object bindingResultCheck(ProceedingJoinPoint joinPoint, BindingResult bindingResult) throws Throwable {
         log.info("AOP 拦截：对DELETE、POST、PUT请求参数进行校验");
 
-        // 获取方法参数
-        Object[] args = joinPoint.getArgs();
-        // 标识是否包含错误
-        boolean hasError = false;
-        // 错误信息
-        String message = "";
+        // 错误信息列表
+        List<FieldErrorMessage> errorMessages = null;
 
-        // 遍历参数
-        for (Object arg : args) {
-            // 判断参数类型是否为: org.springframework.validation.BindingResult
-            boolean argIsBindingResult = arg instanceof BindingResult;
+        if (bindingResult.hasErrors()) {
+            // 错误信息列表
+            errorMessages = this.getFieldErrorMessages(bindingResult);
+        } else if (bindingResult.getTarget() instanceof AbstractParamValid) {
+            // 存在自定义参数校验方法
+            AbstractParamValid paramValid = (AbstractParamValid) bindingResult.getTarget();
 
-            if (!argIsBindingResult) {
-                // 参数类型不匹配
-                continue;
-            }
-
-            // 类型匹配，强制类型转换
-            BindingResult bindingResult = (BindingResult) arg;
-            if (bindingResult.hasErrors()) {
-                hasError = true;
-
-                // 错误信息列表
-                List<FieldErrorMessage> errorMessages = this.getFieldErrorMessages(bindingResult);
-
-                // 获取第一个错误
-                message = "提交异常。错误：" + errorMessages.get(0).getErrorMessage();
-
-                // 获取所有错误信息
-                String allErrorMessageStr = errorMessages.stream()
-                        .map(FieldErrorMessage::getErrorMessage)
-                        .collect(Collectors.joining(","));
-
-                log.error("参数异常。all errors message：{} \t params:{}",
-                        allErrorMessageStr, bindingResult.getTarget());
-
-                /*
-                 * 退出for循环
-                 * 因BindingResult参数，在方法中只有一个
-                 */
-                break;
-            }
+            // 获取自定义校验结果
+            errorMessages = Optional.ofNullable(paramValid.checkParameters()).orElse(Collections.emptyList());
         }
 
-        if (hasError) {
-            return new ResponseResult<>(false, message);
+        if (errorMessages != null && errorMessages.size() > 0) {
+            // 打印所有错误信息
+            errorMessages.stream()
+                    .map(item -> "field:" + item.getFieldName() + " \t message:" + item.getErrorMessage())
+                    .forEach(System.out::println);
+
+            // 返回第一个错误
+            return new ResponseResult<>(false, errorMessages.get(0).getErrorMessage());
         }
 
         return joinPoint.proceed();
@@ -135,32 +112,5 @@ public class BindingResultCheckAspect {
         }
 
         return errorMessages;
-    }
-
-    /**
-     * 自定义内部类：字段错误信息
-     */
-    private static class FieldErrorMessage {
-        /**
-         * 字段名
-         */
-        private String fieldName;
-        /**
-         * 错误信息
-         */
-        private String errorMessage;
-
-        private FieldErrorMessage(String fieldName, String errorMessage) {
-            this.fieldName = fieldName;
-            this.errorMessage = errorMessage;
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
     }
 }

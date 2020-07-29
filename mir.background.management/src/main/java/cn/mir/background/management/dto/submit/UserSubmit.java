@@ -1,8 +1,14 @@
 package cn.mir.background.management.dto.submit;
 
+import cn.mir.background.management.utils.validation.AbstractParamValid;
+import cn.mir.background.management.utils.validation.FieldErrorMessage;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 提交数据接收类：用户信息提交
@@ -10,8 +16,9 @@ import javax.validation.constraints.NotBlank;
  *
  * @author 周光兵
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UserSubmit {
+public class UserSubmit extends AbstractParamValid {
     /**
      * 用户名
      */
@@ -31,16 +38,18 @@ public class UserSubmit {
      * 手机号
      */
     @NotBlank(message = "手机号不能为空")
-
     private String phone;
     /**
      * 住址
      */
-    @NotBlank(message = "住址不能为空")
     private String address;
     /**
      * 备注
      */
-    @NotBlank(message = "备注不能为空")
     private String remark;
+
+    @Override
+    public List<FieldErrorMessage> checkParameters() {
+        return Collections.singletonList(new FieldErrorMessage("address", "住址不能为空"));
+    }
 }

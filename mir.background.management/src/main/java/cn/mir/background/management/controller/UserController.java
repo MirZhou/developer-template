@@ -24,9 +24,6 @@ public class UserController extends BaseController {
         // 打印日志
         log.info("提交用户信息 param:{}", submitData);
 
-        // 检测参数有效性
-//        super.checkParameter(bindingResult);
-
         return new ResponseResult<>(true, "提交成功");
     }
 }
