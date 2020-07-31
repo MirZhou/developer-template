@@ -182,6 +182,27 @@ project(":mir.spring.generator") {
     }
 }
 
+project(":mir.spring.redis.cluster") {
+    group 'mir.spring.redis.cluster'
+    version '1.0.0'
+
+    dependencies {
+        //
+        compile project(":mir.utilities")
+
+        compile ('org.springframework.boot:spring-boot-starter-web') {
+            exclude group: 'org.springframework.boot', module:'spring-boot-starter-tomcat'
+        }
+        compile ('org.springframework.boot:spring-boot-starter-jetty')
+        compile 'org.springframework.boot:spring-boot-starter-data-redis'
+
+        compile 'org.springframework.boot:spring-boot-devtools'
+
+        // Test
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
+}
+
 //apply plugin: 'org.springframework.boot'
 //apply plugin: 'io.spring.dependency-management'
 
