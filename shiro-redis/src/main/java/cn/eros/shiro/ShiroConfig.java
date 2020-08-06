@@ -1,13 +1,11 @@
 package cn.eros.shiro;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,14 +22,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Configuration
 public class ShiroConfig {
-    private final RedisProperties redisProperties;
-    private final AuthSessionDao authSessionDao;
-
-    public ShiroConfig(RedisProperties redisProperties, AuthSessionDao authSessionDao) {
-        this.redisProperties = redisProperties;
-        this.authSessionDao = authSessionDao;
-    }
-
     @Bean
     public ShiroRealm userRealm() {
         ShiroRealm realm = new ShiroRealm();
@@ -64,9 +54,6 @@ public class ShiroConfig {
         // 设置sessionManager
         securityManager.setSessionManager(sessionConfig);
 
-        // 设置SecurityManager
-        SecurityUtils.setSecurityManager(securityManager);
-
         return securityManager;
     }
 
@@ -80,10 +67,8 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 设置SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // 设置登录地址。如果不设置，默认访问工程目录下的"/login.jsp"页面，或者"/login"的映射
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        // 设置无权限时的跳转地址
-        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
+        // 设置登录拦截器
+        shiroFilterFactoryBean.getFilters().put("authc", new ShiroLoginFilter());
 
         // 设置拦截器
         Map<String, String> filterChainDefinitionMap = new HashMap<>(4);

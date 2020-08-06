@@ -1,5 +1,7 @@
 package cn.eros.shiro;
 
+import cn.eros.dto.submit.LoginSubmit;
+import com.sun.deploy.net.proxy.pac.PACFunctionsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -26,6 +28,8 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         log.info("获取用户授权");
 
+        // principals.getPrimaryPrincipal()
+
         return null;
     }
 
@@ -36,10 +40,18 @@ public class ShiroRealm extends AuthorizingRealm {
         // 用户名
         String username = (String)token.getPrincipal();
 
+        if (!USERNAME.equals(username)) {
+            return null;
+        }
+
+        LoginSubmit entity = new LoginSubmit();
+        entity.setUsername(username);
+        entity.setPassword("dfkslajflkdsjalfjdsakl");
+
         // 通过用户名查找用户信息
 
         return new SimpleAuthenticationInfo(
-                USERNAME,
+                entity,
                 PASSWORD,
                 ByteSource.Util.bytes(SALT),
                 getName()

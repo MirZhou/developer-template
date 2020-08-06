@@ -56,9 +56,9 @@ public class AccountController {
 
     @GetMapping("/current/username")
     public ResponseResult<String> getCurrentUsername() {
-        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        LoginSubmit user = (LoginSubmit)SecurityUtils.getSubject().getPrincipal();
 
-        return new ResponseResult<>(true, "调用成功", username);
+        return new ResponseResult<>(true, "调用成功", user.getUsername());
     }
 
     @GetMapping("/logout")

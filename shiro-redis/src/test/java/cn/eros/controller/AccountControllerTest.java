@@ -1,11 +1,15 @@
 package cn.eros.controller;
 
+import cn.eros.error.ExceptionMapper;
 import cn.mir.common.utilities.ResponseResult;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.UUID;
+
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,6 +35,14 @@ public class AccountControllerTest {
 
     @Autowired
     private AccountController accountController;
+
+    @Autowired
+    private SecurityManager securityManager;
+
+    @Before
+    public void before() {
+        SecurityUtils.setSecurityManager(this.securityManager);
+    }
 
     @Test
     public void testLogin() throws Exception {
@@ -63,14 +77,20 @@ public class AccountControllerTest {
         getCurrentUsername(responseResult.getData().toString());
     }
 
+    @Test
+    public void getCurrentUsername() throws Exception {
+        this.getCurrentUsername("e0928897-a94a-44a6-a765-72312ae6dbf0");
+    }
+
     private void getCurrentUsername(String token) throws Exception {
         String urlTemplate = "/current/username";
 
         MockHttpServletRequestBuilder mockHttp = MockMvcRequestBuilders.get(urlTemplate);
         mockHttp.contentType(MediaType.APPLICATION_JSON);
-//        mockHttp.header("token", token);
+        mockHttp.header("token", token);
 
         ResultActions resultActions = MockMvcBuilders.standaloneSetup(this.accountController)
+                .setControllerAdvice(ExceptionMapper.class)
                 .build()
                 .perform(mockHttp);
 
@@ -80,9 +100,9 @@ public class AccountControllerTest {
 
         String content = resultActions.andReturn().getResponse().getContentAsString();
 
-        TypeReference<ResponseResult<String>> type = new TypeReference<ResponseResult<String>>() {
+        TypeReference<ResponseResult<?>> type = new TypeReference<ResponseResult<?>>() {
         };
-        ResponseResult<String> responseResult = JSON.parseObject(content, type);
+        ResponseResult<?> responseResult = JSON.parseObject(content, type);
 
         Assert.assertNotNull(responseResult);
         Assert.assertTrue(responseResult.getSuccess());
