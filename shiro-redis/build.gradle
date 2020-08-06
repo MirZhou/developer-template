@@ -1,0 +1,30 @@
+group = 'cn.eros'
+version = '1.0.0'
+
+apply plugin: 'org.springframework.boot'
+// 由Spring统一管理依赖
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = "shiro-redis"
+
+bootJar {
+    enabled = true
+}
+
+dependencies {
+    compile project(":mir.utilities")
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.1'
+    compile('org.springframework.boot:spring-boot-starter-data-redis') {
+//        exclude group: 'redis.clients', module: 'jedis'
+//        exclude group: 'io.lettuce', module: 'lettuce-core'
+    }
+    // 使用redis集群，需引用此jar包
+    compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
+    compile group: 'org.crazycake', name: 'shiro-redis', version: '3.2.3'
+
+    // Test
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
