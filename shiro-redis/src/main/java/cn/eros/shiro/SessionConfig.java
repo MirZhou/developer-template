@@ -37,8 +37,13 @@ public class SessionConfig extends DefaultWebSessionManager {
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
 
             return token;
-        }
+        } else {
+            // 按默认规则从cookie取sessionId
+            Serializable value = super.getSessionId(request, response);
 
-        return null;
+            log.info("按默认规则从cookie取sessionId value:{}", value);
+
+            return value;
+        }
     }
 }
