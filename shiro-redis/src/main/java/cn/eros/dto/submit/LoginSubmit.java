@@ -15,4 +15,12 @@ public class LoginSubmit implements Serializable {
 
     private String username;
     private String password;
+
+    public LoginSubmit() {
+    }
+
+    public LoginSubmit(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
