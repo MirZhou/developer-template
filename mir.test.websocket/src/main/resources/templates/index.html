@@ -42,7 +42,7 @@
 </section>
 
 <script src="/webjars/jquery/3.4.1/jquery.js"></script>
-<script src="/webjars/sockjs-client/1.0.0/sockjs.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.js"></script>
 <script>
     let currentLocation = window.location.href;
@@ -76,7 +76,7 @@
     function connect() {
         console.log("连接websocket服务");
 
-        let host = "localhost:8025";
+        let host = "localhost:8080";
 
         let socket = new SockJS(`http://${host}/chat`);
         // let socket = new SockJS("/chat");
