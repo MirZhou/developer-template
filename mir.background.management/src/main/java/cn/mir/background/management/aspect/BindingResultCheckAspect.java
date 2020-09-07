@@ -12,10 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * AOP：对DELETE、POST、PUT请求绑定参数，进行参数校验
