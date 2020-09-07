@@ -1,7 +1,6 @@
 package cn.mir.background.management.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import cn.mir.common.utilities.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.mir.common.utilities.ResponseResult;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 错误请求处理
@@ -86,7 +85,7 @@ public class ErrorHandlerController extends AbstractErrorController {
 
         ResponseResult<Void> result = new ResponseResult<>();
         result.setSuccess(false);
-        result.setCode(errorCode);
+        result.setCode(Integer.toString(errorCode));
         result.setMessage(errorMessage);
         result.setUrl(url);
 
