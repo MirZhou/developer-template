@@ -36,6 +36,8 @@ target/
 .vscode/
 **/bin/
 
+**/.jython_cache/
+
 ### Mac OS ###
 **/.DS_Store
 
