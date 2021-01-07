@@ -1,6 +1,7 @@
 package cn.mir.background.management.validation;
 
 import cn.mir.background.management.dto.submit.UserSubmit;
+import cn.mir.common.utilities.validator.groups.Update;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -25,14 +26,12 @@ public class UserSubmitValidationTest {
         try(ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             Validator validator = validatorFactory.getValidator();
 
-            Set<ConstraintViolation<UserSubmit>> cvSet = validator.validate(entity);
+            Set<ConstraintViolation<UserSubmit>> cvSet = validator.validate(entity, Update.class);
 
-            cvSet.forEach(item -> {
-                log.info("classname:{} property:{} error:{}",
-                        item.getRootBeanClass().getName(),
-                        item.getPropertyPath(),
-                        item.getMessage());
-            });
+            cvSet.forEach(item -> log.info("classname:{} property:{} error:{}",
+                item.getRootBeanClass().getName(),
+                item.getPropertyPath(),
+                item.getMessage()));
         }
     }
 }

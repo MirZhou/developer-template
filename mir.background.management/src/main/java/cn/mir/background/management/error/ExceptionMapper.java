@@ -1,7 +1,9 @@
 package cn.mir.background.management.error;
 
+import cn.mir.background.management.utils.validation.FieldErrorMessage;
 import cn.mir.common.utilities.ResponseResult;
 import cn.mir.common.utilities.error.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 控制器异常处理
@@ -21,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author 周光兵
  */
+@Slf4j
 @RestControllerAdvice
 public class ExceptionMapper {
     /**
@@ -41,6 +51,17 @@ public class ExceptionMapper {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ResponseResult<Object>> handleNotModified(HttpServletRequest request, UnauthorizedException ex) {
         return this.getResponseEntity(request, HttpStatus.UNAUTHORIZED, ex);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseResult<Object>> handleMethodArgumentValidException(HttpServletRequest request, MethodArgumentNotValidException ex) {
+        // 错误信息列表
+        List<FieldErrorMessage> errorMessages = this.getFieldErrorMessages(ex.getBindingResult());
+
+        // 打印所有错误信息
+        errorMessages.forEach(error -> log.error("{}", error));
+
+        return this.getResponseEntity(request, HttpStatus.BAD_REQUEST, errorMessages.get(0).getErrorMessage(), ex);
     }
 
     @ExceptionHandler(ParamErrorException.class)
@@ -91,14 +112,49 @@ public class ExceptionMapper {
         return this.generated(responseResult);
     }
 
+
+    /**
+     * 从错误绑定结果中，获取所有错误字段及其错误信息
+     *
+     * @param bindingResult 错误绑定结果
+     * @return 错误信息列表
+     */
+    private List<FieldErrorMessage> getFieldErrorMessages(BindingResult bindingResult) {
+        // 存放错误信息列表
+        List<FieldErrorMessage> errorMessages = new ArrayList<>();
+
+        // 获取要验证类的所有字段
+        Field[] arrayField = Objects.requireNonNull(bindingResult.getTarget())
+            .getClass()
+            .getDeclaredFields();
+
+        // 遍历字段
+        for (Field field : arrayField) {
+            // 获取字段名
+            String fieldName = field.getName();
+
+            // 根据字段名获取错误信息
+            FieldError fieldError = bindingResult.getFieldError(fieldName);
+
+            if (fieldError == null) {
+                continue;
+            }
+
+            // 添加到错误信息列表中
+            errorMessages.add(new FieldErrorMessage(fieldName, fieldError.getDefaultMessage()));
+        }
+
+        return errorMessages;
+    }
+
     private ResponseEntity<ResponseResult<Object>> generated(ResponseResult<Object> responseResult) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .headers(httpHeaders)
-                .body(responseResult);
+            .status(HttpStatus.OK)
+            .headers(httpHeaders)
+            .body(responseResult);
     }
 
 } // end public class ExceptionMapper

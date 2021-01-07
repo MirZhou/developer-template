@@ -21,7 +21,7 @@ public class UserControllerTest extends BaseControllerTest {
     public void save() throws Exception {
         String urlTemplate = "/user";
 
-        // 第一次尚义
+        // 第一次测试
         // 请求参数对象
         JSONObject requestParam = new JSONObject();
 
@@ -48,13 +48,12 @@ public class UserControllerTest extends BaseControllerTest {
 
         Assert.assertNotNull(responseResult);
         Assert.assertFalse(responseResult.getSuccess());
-        Assert.assertEquals("昵称不能为空", responseResult.getMessage());
+        Assert.assertEquals("性别不能为空", responseResult.getMessage());
 
         // 第三次测试
         requestParam.clear();
         requestParam.put("username", "eros");
-        requestParam.put("nickname", "eros");
-        requestParam.put("phone", "18684107874");
+        requestParam.put("gender", "男");
 
         mockHttp = MockMvcRequestBuilders.post(urlTemplate);
         mockHttp.content(JSON.toJSONString(requestParam));
@@ -63,7 +62,7 @@ public class UserControllerTest extends BaseControllerTest {
 
         Assert.assertNotNull(responseResult);
         Assert.assertFalse(responseResult.getSuccess());
-        Assert.assertEquals("性别不能为空", responseResult.getMessage());
+        Assert.assertEquals("手机号不能为空", responseResult.getMessage());
 
         // 第四次测试
         requestParam.clear();
@@ -80,6 +79,16 @@ public class UserControllerTest extends BaseControllerTest {
         Assert.assertNotNull(responseResult);
         Assert.assertFalse(responseResult.getSuccess());
         Assert.assertEquals("住址不能为空", responseResult.getMessage());
+
+        // 第五次测试
+        mockHttp = MockMvcRequestBuilders.put(urlTemplate);
+        mockHttp.content(JSON.toJSONString(requestParam));
+
+        responseResult = super.execution(mockHttp, type);
+
+        Assert.assertNotNull(responseResult);
+        Assert.assertFalse(responseResult.getSuccess());
+        Assert.assertEquals("id不能为空", responseResult.getMessage());
     }
 
     @Override

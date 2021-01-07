@@ -2,11 +2,12 @@ package cn.mir.background.management.dto.submit;
 
 import cn.mir.background.management.utils.validation.AbstractParamValid;
 import cn.mir.background.management.utils.validation.FieldErrorMessage;
+import cn.mir.common.utilities.validator.groups.Update;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,15 +21,15 @@ import java.util.List;
 @Data
 public class UserSubmit extends AbstractParamValid {
     /**
+     * ID
+     */
+    @NotNull(message = "id不能为空", groups = Update.class)
+    private Long id;
+    /**
      * 用户名
      */
     @NotBlank(message = "姓名不能为空")
     private String username;
-    /**
-     * 昵称
-     */
-    @NotBlank(message = "昵称不能为空")
-    private String nickname;
     /**
      * 性别
      */
