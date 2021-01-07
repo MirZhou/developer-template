@@ -20,8 +20,10 @@ import java.util.*;
  * <p>Create time: 2020/5/20 22:21</p>
  *
  * @author 周光兵
+ * @deprecated 要求方法参数必须为(@Valid @RequestBody RequestBody request, BindingResult); 对业务代码侵入性强，且不灵活。
  */
 @Slf4j
+@Deprecated
 @Aspect
 @Component
 public class BindingResultCheckAspect {
