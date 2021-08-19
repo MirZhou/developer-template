@@ -13,16 +13,16 @@ bootJar {
 
 dependencies {
     //
-    compile project(":mir.utilities")
+    compileOnly project(":mir.utilities")
 
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-websocket'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-websocket'
+    compileOnly 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // webjar
-    compile 'org.webjars:jquery:3.4.1'
-    compile 'org.webjars:sockjs-client:1.1.2'
-    compile 'org.webjars:stomp-websocket:2.3.3-1'
+    compileOnly 'org.webjars:jquery:3.4.1'
+    compileOnly 'org.webjars:sockjs-client:1.1.2'
+    compileOnly 'org.webjars:stomp-websocket:2.3.3-1'
 
     // test
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
