@@ -6,6 +6,7 @@ import cn.mir.common.utilities.validator.groups.Update;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -52,5 +53,15 @@ public class UserSubmit extends AbstractParamValid {
     @Override
     public List<FieldErrorMessage> checkParameters() {
         return Collections.singletonList(new FieldErrorMessage("address", "住址不能为空"));
+    }
+
+    @AssertTrue(message = "must be true")
+    public boolean check() {
+        return username.length()>5;
+    }
+
+    @NotNull(message = "must not be null")
+    public String checkString() {
+        return null;
     }
 }

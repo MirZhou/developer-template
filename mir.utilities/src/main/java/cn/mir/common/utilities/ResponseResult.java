@@ -17,9 +17,9 @@ public class ResponseResult<T> {
      */
     private Boolean success;
     /**
-     * Http状态码
+     * 响应码
      */
-    private Integer code;
+    private String code;
     /**
      * 请求地址
      */
@@ -28,6 +28,13 @@ public class ResponseResult<T> {
      * 接口返回消息
      */
     private String message;
+    private String cause;
+    private String requestId;
+    private String hostId;
+    /**
+     * 记录发送错误时的服务器时间
+     */
+    private String serverTime;
     /**
      * 接口返回对象
      */
