@@ -61,7 +61,7 @@ public class ErrorHandlerController extends AbstractErrorController {
         return ResponseEntity.status(HttpStatus.OK.value()).body(result);
     }
 
-    @Override
+//    @Override
     public String getErrorPath() {
         return ERROR_PATH;
     }

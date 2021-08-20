@@ -38,12 +38,12 @@ allprojects {
     dependencies {
         //
 //        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
-        annotationProcessor 'org.projectlombok:lombok:1.18.6'
-        compileOnly 'org.projectlombok:lombok:1.18.6'
-        testAnnotationProcessor 'org.projectlombok:lombok:1.18.6'
-        testCompileOnly 'org.projectlombok:lombok:1.18.6'
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+        testCompileOnly 'org.projectlombok:lombok:1.18.20'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
         // Test
-        testCompileOnly group: 'junit', name: 'junit', version: '4.12'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
     }
 
     tasks.withType(JavaCompile) {
@@ -54,41 +54,42 @@ allprojects {
 // 通用类库
 project(":mir.utilities") {
     dependencies {
-        compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
-        compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
-        compileOnly group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
-        compileOnly group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
-        compileOnly group: 'jakarta.validation', name: 'jakarta.validation-api', version: '2.0.2'
-        compileOnly group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-        compileOnly group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
-        compileOnly group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
-        compileOnly group: 'org.python', name: 'jython', version: '2.7.2'
+        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
+        compile group: 'com.alibaba', name: 'fastjson', version: '1.2.78'
+        implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '2.0.2'
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+        implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+        implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+        implementation group: 'org.python', name: 'jython', version: '2.7.2'
     }
 }
 
 project(":mir.background.management") {
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
         //
-        compileOnly('org.springframework.boot:spring-boot-starter-web')
-        compileOnly('org.springframework.boot:spring-boot-starter-thymeleaf')
-        compileOnly('org.springframework.boot:spring-boot-starter-actuator')
-        compileOnly('org.springframework.boot:spring-boot-starter-hateoas')
-        compileOnly('org.springframework.boot:spring-boot-starter-security')
-        compileOnly('org.springframework.boot:spring-boot-starter-data-jpa')
-        compileOnly('org.springframework.boot:spring-boot-starter-data-mongodb')
-        compileOnly group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.1'
-        compileOnly group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
-        compileOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
-        compileOnly group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
-        compileOnly('org.springframework.boot:spring-boot-devtools')
+        implementation('org.springframework.boot:spring-boot-starter-web')
+        implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+        implementation('org.springframework.boot:spring-boot-starter-actuator')
+        implementation('org.springframework.boot:spring-boot-starter-hateoas')
+        implementation('org.springframework.boot:spring-boot-starter-security')
+        implementation('org.springframework.boot:spring-boot-starter-validation')
+        implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+        implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+        implementation group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.1'
+        implementation group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+        implementation group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+        implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+        implementation('org.springframework.boot:spring-boot-devtools')
         // Test
-        testCompileOnly('org.springframework.boot:spring-boot-starter-test')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
         // Web Jars
-        compileOnly 'org.webjars:jquery:3.4.1'
-        compileOnly 'org.webjars.bower:font-awesome:4.7.0'
-        compileOnly 'org.webjars:bootstrap:3.4.0'
+        implementation 'org.webjars:jquery:3.4.1'
+        implementation 'org.webjars.bower:font-awesome:4.7.0'
+        implementation 'org.webjars:bootstrap:3.4.0'
     }
 }
 
@@ -96,12 +97,12 @@ project(":mir.background.management") {
 project(":mir.test.aop") {
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
         //
         implementation('org.springframework.boot:spring-boot-starter-web')
-        compileOnly group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.3'
+        implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.3'
         // Test
-        testCompileOnly('org.springframework.boot:spring-boot-starter-test')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
     }
 }
 
@@ -111,22 +112,22 @@ project(":mir.test.snapped.goods") {
 
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
 
-        compileOnly 'org.springframework.boot:spring-boot-starter-web'
-        compileOnly 'org.springframework.boot:spring-boot-starter-thymeleaf'
-        compileOnly 'org.springframework.boot:spring-boot-devtools'
-        compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
-        compileOnly group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
-        compileOnly group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
-        compileOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        implementation 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-configuration-processor'
+        implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
+        implementation group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+        implementation group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
 
         //
-        compileOnly 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
-        compileOnly group: 'org.mybatis.generator', name: 'mybatis-generator-core', version: mybatisGeneratorCoreVersion
+        implementation 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
+        implementation group: 'org.mybatis.generator', name: 'mybatis-generator-core', version: mybatisGeneratorCoreVersion
 
         // webjar
-        compileOnly 'org.webjars:jquery:3.4.1'
+        implementation 'org.webjars:jquery:3.4.1'
 
         // test
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -141,18 +142,18 @@ project(":mir.test.token.security") {
 
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
 
-        compileOnly 'org.springframework.boot:spring-boot-starter-web'
-        compileOnly 'org.springframework.boot:spring-boot-starter-thymeleaf'
-        compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-        compileOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-devtools'
 
         // webjars
-        compileOnly 'org.webjars:vue:2.6.11'
-        compileOnly 'org.webjars.npm:axios:0.19.2'
-        compileOnly 'org.webjars.bower:crypto-js:3.1.9-1'
+        implementation 'org.webjars:vue:2.6.11'
+        implementation 'org.webjars.npm:axios:0.19.2'
+        implementation 'org.webjars.bower:crypto-js:3.1.9-1'
     }
 }
 
@@ -162,28 +163,28 @@ project(":mir.spring.generator") {
 
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
 
-        compileOnly ('org.springframework.boot:spring-boot-starter-web') {
+        implementation ('org.springframework.boot:spring-boot-starter-web') {
 		    exclude group: 'org.springframework.boot', module:'spring-boot-starter-tomcat'
 	    }
-	    compileOnly ('org.springframework.boot:spring-boot-starter-jetty')
-        compileOnly 'org.springframework.boot:spring-boot-starter-thymeleaf'
-        compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
+	    implementation ('org.springframework.boot:spring-boot-starter-jetty')
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-        compileOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-devtools'
         
-        compileOnly group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
-        compileOnly group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
-        compileOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+        implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisVersion
+        implementation group: "com.alibaba", name: "druid-spring-boot-starter", version: "1.1.18"
+        implementation group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
         
         // Test
-        testCompileOnly('org.springframework.boot:spring-boot-starter-test')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
 
         // webjars
-        compileOnly 'org.webjars:vue:2.6.11'
-        compileOnly 'org.webjars.npm:axios:0.19.2'
-        compileOnly 'org.webjars.bower:crypto-js:3.1.9-1'
+        implementation 'org.webjars:vue:2.6.11'
+        implementation 'org.webjars.npm:axios:0.19.2'
+        implementation 'org.webjars.bower:crypto-js:3.1.9-1'
     }
 }
 
@@ -193,18 +194,18 @@ project(":mir.spring.redis.cluster") {
 
     dependencies {
         //
-        compileOnly project(":mir.utilities")
+        implementation project(":mir.utilities")
 
-        compileOnly ('org.springframework.boot:spring-boot-starter-web') {
+        implementation ('org.springframework.boot:spring-boot-starter-web') {
             exclude group: 'org.springframework.boot', module:'spring-boot-starter-tomcat'
         }
-        compileOnly ('org.springframework.boot:spring-boot-starter-jetty')
-        compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation ('org.springframework.boot:spring-boot-starter-jetty')
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-        compileOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-devtools'
 
         // Test
-        testCompileOnly('org.springframework.boot:spring-boot-starter-test')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
     }
 }
 
