@@ -2,6 +2,7 @@ package cn.mir.background.management.dto.submit;
 
 import cn.mir.background.management.utils.validation.AbstractParamValid;
 import cn.mir.background.management.utils.validation.FieldErrorMessage;
+import cn.mir.common.utilities.validator.Phone;
 import cn.mir.common.utilities.validator.groups.Update;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +41,7 @@ public class UserSubmit extends AbstractParamValid {
      * 手机号
      */
     @NotBlank(message = "手机号不能为空")
+    @Phone(message = "手机号不合法")
     private String phone;
     /**
      * 住址
@@ -56,12 +58,12 @@ public class UserSubmit extends AbstractParamValid {
     }
 
     @AssertTrue(message = "must be true")
-    public boolean check() {
-        return username.length()>5;
+    public boolean getCheck() {
+        return username.length() > 5;
     }
 
     @NotNull(message = "must not be null")
-    public String checkString() {
+    public String getCheckString() {
         return null;
     }
 }

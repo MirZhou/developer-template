@@ -13,16 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 控制器异常处理
@@ -120,41 +117,16 @@ public class ExceptionMapper {
      * @return 错误信息列表
      */
     private List<FieldErrorMessage> getFieldErrorMessages(BindingResult bindingResult) {
-        // 存放错误信息列表
-        List<FieldErrorMessage> errorMessages = new ArrayList<>();
-
-        // 获取要验证类的所有字段
-        Field[] arrayField = Objects.requireNonNull(bindingResult.getTarget())
-            .getClass()
-            .getDeclaredFields();
-
-        // 遍历字段
-        for (Field field : arrayField) {
-            // 获取字段名
-            String fieldName = field.getName();
-
-            // 根据字段名获取错误信息
-            FieldError fieldError = bindingResult.getFieldError(fieldName);
-
-            if (fieldError == null) {
-                continue;
-            }
-
-            // 添加到错误信息列表中
-            errorMessages.add(new FieldErrorMessage(fieldName, fieldError.getDefaultMessage()));
-        }
-
-        return errorMessages;
+        return bindingResult.getFieldErrors().stream()
+            .map(fieldError -> new FieldErrorMessage(fieldError.getField(), fieldError.getDefaultMessage()))
+            .collect(Collectors.toList());
     }
 
     private ResponseEntity<ResponseResult<Object>> generated(ResponseResult<Object> responseResult) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .headers(httpHeaders)
-            .body(responseResult);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(responseResult);
     }
 
 } // end public class ExceptionMapper

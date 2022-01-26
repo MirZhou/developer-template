@@ -9,12 +9,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.constraints.AssertTrue;
-import javax.validation.executable.ExecutableValidator;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,27 +22,12 @@ public class UserSubmitValidationTest {
     public void testValidation() {
         UserSubmit entity = new UserSubmit();
         entity.setUsername("eros");
+        entity.setPhone("fdjslakfjdsa");
 
         try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             Validator validator = validatorFactory.getValidator();
 
             Set<ConstraintViolation<UserSubmit>> cvSet = validator.validate(entity, Update.class);
-
-            List<String> validatePackages = Collections.singletonList("javax.validation.constraints");
-
-            ExecutableValidator executableValidator = validator.forExecutables();
-            Arrays.stream(entity.getClass().getMethods()).forEach(method -> {
-                boolean needValidate = Arrays.stream(method.getAnnotations())
-                    .anyMatch(annotation -> validatePackages.contains(annotation.annotationType().getPackage().getName()));
-
-                if (needValidate) {
-                    try {
-                        cvSet.addAll(executableValidator.validateReturnValue(entity, method, method.invoke(entity)));
-                    } catch (InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
 
             cvSet.forEach(item -> log.info("classname:{} property:{} error:{}",
                 item.getRootBeanClass().getName(),
